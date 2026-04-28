@@ -1,0 +1,80 @@
+[watch]
+# Répertoires à surveiller
+directories = ["./test_source"]
+# Intervalle de polling en millisecondes (utilisé uniquement avec le polling watcher)
+polling_interval_ms = 1000
+
+[sync]
+# Répertoire de destination pour la synchronisation
+destination = "./sync_dest"
+# Créer des sauvegardes avant de synchroniser
+create_backups = false
+# Nombre maximum d'opérations simultanées
+max_concurrent_operations = 4
+
+[filters]
+# Patterns d'exclusion (format glob)
+exclude_patterns = [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/target/**",
+    "**/*.tmp",
+    "**/*.swp",
+    "**/*~",
+    "**/.DS_Store",
+    "**/Thumbs.db"
+]
+# Taille maximale de fichier en MB (optionnel)
+max_file_size_mb = 100
+# Extensions à surveiller uniquement (vide = toutes)
+include_extensions = []
+
+[reporting]
+# Afficher la progression
+show_progress = true
+# Fichier de log (optionnel)
+# log_file = "filesentinel.log"
+
+[versioning]
+# Activer le versionnement
+enabled = true
+# Nombre maximum de versions par fichier
+max_versions = 5
+# Répertoire de stockage des versions
+versions_dir = ".versions"
+# Créer automatiquement une version à chaque changement
+auto_version_on_change = true
+
+[compression]
+# Activer la compression
+enabled = true
+# Niveau de compression (1-9)
+level = 6
+# Taille minimale de fichier pour la compression (en octets)
+min_file_size_for_compression = 1024
+
+[notifications]
+# Activer les notifications desktop
+enabled = true
+# Afficher un résumé pour les lots
+show_batch_summary = true
+# Intervalle minimum entre les notifications (secondes)
+min_interval_seconds = 5
+# Patterns de fichiers critiques
+critical_patterns = [
+    "*.conf",
+    "*.env",
+    "*.toml",
+    "*.json",
+    "*.lock"
+]
+
+# Configuration réseau optionnelle (pour synchronisation SSH)
+# [network]
+# host = "remote-server.com"
+# port = 22
+# username = "user"
+# key_path = "~/.ssh/id_rsa"
+# remote_path = "/remote/backup/path"
+# rsync_options = ["-avz", "--progress", "--partial"]
+# auto_sync_interval_minutes = 30
