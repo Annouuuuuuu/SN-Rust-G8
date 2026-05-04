@@ -23,9 +23,9 @@ pub enum ChangeType {
 impl fmt::Display for ChangeType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Created => write!(f, "CREATED"),
-            Self::Modified => write!(f, "MODIFIED"),
-            Self::Deleted => write!(f, "DELETED"),
+            Self::Created => write!(f, "CRÉÉ"),
+            Self::Modified => write!(f, "MODIFIÉ"),
+            Self::Deleted => write!(f, "SUPPRIMÉ"),
         }
     }
 }

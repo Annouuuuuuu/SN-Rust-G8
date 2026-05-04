@@ -86,7 +86,7 @@ impl SyncEngine {
     fn resolve_dest_path(&self, source_path: &Path) -> Result<PathBuf> {
         let relative = source_path.strip_prefix(&self.source_root).map_err(|e| {
             FileSentinelError::Sync(format!(
-                "Cannot compute relative path for {}: {}",
+                "Impossible de calculer le chemin relatif pour {} : {}",
                 source_path.display(),
                 e
             ))
@@ -114,7 +114,7 @@ impl SyncEngine {
                 if let Some(parent) = dest_path.parent() {
                     fs::create_dir_all(parent).map_err(|e| {
                         FileSentinelError::Sync(format!(
-                            "Cannot create directory {}: {}",
+                            "Impossible de créer le répertoire {} : {}",
                             parent.display(),
                             e
                         ))
@@ -137,7 +137,7 @@ impl SyncEngine {
                         }
 
                         info!(
-                            "Synced: {} -> {} ({} bytes)",
+                            "Synchronisé : {} -> {} ({} octets)",
                             event.file_path.display(),
                             dest_path.display(),
                             bytes
@@ -145,7 +145,7 @@ impl SyncEngine {
                     }
                     Err(e) => {
                         let error_msg = format!(
-                            "Failed to copy {}: {}",
+                            "Impossible de copier {} : {}",
                             event.file_path.display(),
                             e
                         );
@@ -161,11 +161,11 @@ impl SyncEngine {
                     match fs::remove_file(&dest_path) {
                         Ok(_) => {
                             stats.files_deleted += 1;
-                            info!("Deleted: {}", dest_path.display());
+                            info!("Supprimé : {}", dest_path.display());
                         }
                         Err(e) => {
                             let error_msg = format!(
-                                "Failed to delete {}: {}",
+                                "Impossible de supprimer {} : {}",
                                 dest_path.display(),
                                 e
                             );
@@ -189,7 +189,7 @@ impl SyncEngine {
         let mut stats = SyncStats::new();
 
         info!(
-            "Starting full sync: {} -> {}",
+            "Début de la synchronisation complète : {} -> {}",
             self.source_root.display(),
             self.dest_root.display()
         );
@@ -200,7 +200,7 @@ impl SyncEngine {
         self.sync_directory(&self.source_root, &mut stats)?;
 
         stats.duration_ms = start.elapsed().as_millis();
-        info!("Full sync completed in {}ms", stats.duration_ms);
+        info!("Synchronisation complète terminée en {}ms", stats.duration_ms);
 
         Ok(stats)
     }
@@ -242,7 +242,7 @@ impl SyncEngine {
                         }
                         Err(e) => {
                             stats.errors.push(format!(
-                                "Copy error {}: {}",
+                                "Erreur de copie {} : {}",
                                 path.display(),
                                 e
                             ));

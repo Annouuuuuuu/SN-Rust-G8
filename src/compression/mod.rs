@@ -34,7 +34,7 @@ impl CompressionManager {
         let metadata = fs::metadata(source)?;
         if metadata.len() < self.min_size {
             debug!(
-                "File too small for compression: {} ({} bytes)",
+                "Fichier trop petit pour la compression : {} ({} octets)",
                 source.display(),
                 metadata.len()
             );
@@ -50,7 +50,7 @@ impl CompressionManager {
         // Lire le fichier source
         let source_content = fs::read(source).map_err(|e| {
             FileSentinelError::Compression(format!(
-                "Cannot read file {}: {}",
+                "Impossible de lire le fichier {} : {}",
                 source.display(),
                 e
             ))
@@ -69,7 +69,7 @@ impl CompressionManager {
         let ratio = compressed_size as f64 / metadata.len() as f64 * 100.0;
 
         debug!(
-            "Compressed: {} -> {} ({:.1}% of original)",
+            "Compressé : {} -> {} ({:.1}% de l'original)",
             source.display(),
             compressed_path.display(),
             ratio

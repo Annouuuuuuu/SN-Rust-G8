@@ -3,46 +3,46 @@ use std::path::PathBuf;
 
 #[derive(Error, Debug)]
 pub enum FileSentinelError {
-    #[error("IO error: {0}")]
+    #[error("Erreur E/S : {0}")]
     Io(#[from] std::io::Error),
 
-    #[error("Configuration error: {0}")]
+    #[error("Erreur de configuration : {0}")]
     Config(String),
 
-    #[error("Permission denied: {path}")]
+    #[error("Accès refusé : {path}")]
     PermissionDenied { path: PathBuf },
 
-    #[error("Disk full: available {available} bytes, needed {needed} bytes")]
+    #[error("Disque plein : disponible {available} octets, nécessaire {needed} octets")]
     DiskFull { available: u64, needed: u64 },
 
-    #[error("File too large: {path} ({size} bytes, max {max_size} bytes)")]
+    #[error("Fichier trop volumineux : {path} ({size} octets, max {max_size} octets)")]
     FileTooLarge { path: PathBuf, size: u64, max_size: u64 },
 
-    #[error("Hash mismatch: {path}")]
+    #[error("Désaccord de hash : {path}")]
     HashMismatch { path: PathBuf },
 
-    #[error("Filter error: {0}")]
+    #[error("Erreur de filtre : {0}")]
     Filter(String),
 
-    #[error("Sync error: {0}")]
+    #[error("Erreur de synchronisation : {0}")]
     Sync(String),
 
-    #[error("Watch error: {0}")]
+    #[error("Erreur de surveillance : {0}")]
     Watch(String),
 
-    #[error("Version storage error: {0}")]
+    #[error("Erreur de stockage des versions : {0}")]
     VersionStorage(String),
 
-    #[error("Compression error: {0}")]
+    #[error("Erreur de compression : {0}")]
     Compression(String),
 
-    #[error("Notification error: {0}")]
+    #[error("Erreur de notification : {0}")]
     Notification(String),
 
-    #[error("Network error: {0}")]
+    #[error("Erreur réseau : {0}")]
     Network(String),
 
-    #[error("Not found: {0}")]
+    #[error("Non trouvé : {0}")]
     NotFound(String),
 
     #[error("{0}")]
@@ -84,9 +84,9 @@ impl std::fmt::Display for ErrorSeverity {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Info => write!(f, "INFO"),
-            Self::Warning => write!(f, "WARNING"),
-            Self::Error => write!(f, "ERROR"),
-            Self::Critical => write!(f, "CRITICAL"),
+            Self::Warning => write!(f, "AVERTISSEMENT"),
+            Self::Error => write!(f, "ERREUR"),
+            Self::Critical => write!(f, "CRITIQUE"),
         }
     }
 }

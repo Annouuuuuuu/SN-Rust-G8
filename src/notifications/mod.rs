@@ -101,7 +101,7 @@ impl NotificationManager {
         );
 
         let body = format!(
-            "File: {}\nStatus: {:?}\nTime: {}",
+            "Fichier : {}\nStatut : {:?}\nHeure : {}",
             event.file_path.display(),
             event.change_type,
             event.timestamp.format("%H:%M:%S")
@@ -120,7 +120,7 @@ impl NotificationManager {
             .timeout(5000)
             .show()
         {
-            debug!("Failed to send notification: {}", e);
+            debug!("Impossible d'envoyer la notification : {}", e);
         }
     }
 
@@ -138,17 +138,17 @@ impl NotificationManager {
             .filter(|e| matches!(e.change_type, ChangeType::Deleted))
             .count();
 
-        let mut summary = String::from("File Sentinel - ");
+        let mut summary = String::from("FileSentinel - ");
         let mut parts = Vec::new();
 
         if created > 0 {
-            parts.push(format!("{} created", created));
+            parts.push(format!("{}crées", created));
         }
         if modified > 0 {
-            parts.push(format!("{} modified", modified));
+            parts.push(format!("{}modifiés", modified));
         }
         if deleted > 0 {
-            parts.push(format!("{} deleted", deleted));
+            parts.push(format!("{}supprimés", deleted));
         }
 
         summary.push_str(&parts.join(", "));
@@ -162,7 +162,7 @@ impl NotificationManager {
             .collect();
 
         if !critical.is_empty() {
-            body.push_str("⚠️ Critical files:\n");
+            body.push_str("⚠️ Fichiers critiques:\n");
             for event in critical.iter().take(5) {
                 body.push_str(&format!(
                     "  {} - {}\n",
@@ -182,7 +182,7 @@ impl NotificationManager {
             .collect();
 
         if !recent.is_empty() {
-            body.push_str("\nRecent changes:\n");
+            body.push_str("\nModifications récentes:\n");
             for event in recent {
                 body.push_str(&format!(
                     "  {} - {}\n",

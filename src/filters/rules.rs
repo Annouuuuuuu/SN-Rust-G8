@@ -16,7 +16,7 @@ pub struct FilterRule {
 impl FilterRule {
     pub fn new_glob_pattern(name: &str, pattern: &str, exclude: bool) -> Result<Self> {
         let pattern = Pattern::new(pattern).map_err(|e| {
-            FileSentinelError::Filter(format!("Invalid glob pattern '{}': {}", pattern, e))
+            FileSentinelError::Filter(format!("Modèle glob invalide '{}' : {}", pattern, e))
         })?;
 
         Ok(Self {
@@ -53,7 +53,7 @@ impl FilterRule {
         // Vérifier le pattern glob
         if let Some(pattern) = &self.pattern {
             if pattern.matches_path(path) {
-                debug!("Rule '{}' matched path: {}", self.name, path.display());
+                debug!("Correspondance de règle '{}' pour le chemin : {}", self.name, path.display());
                 return true;
             }
         }
@@ -63,7 +63,7 @@ impl FilterRule {
             if let Some(size) = file_size {
                 if size > max_size {
                     debug!(
-                        "Rule '{}' matched size: {} > {}",
+                        "Correspondance de règle '{}' pour la taille : {} > {}",
                         self.name, size, max_size
                     );
                     return true;
@@ -75,7 +75,7 @@ impl FilterRule {
         if !self.extensions.is_empty() {
             if let Some(ext) = path.extension().and_then(|e| e.to_str()) {
                 if self.extensions.iter().any(|e| e == ext) {
-                    debug!("Rule '{}' matched extension: {}", self.name, ext);
+                    debug!("Correspondance de règle '{}' pour l'extension : {}", self.name, ext);
                     return true;
                 }
             }

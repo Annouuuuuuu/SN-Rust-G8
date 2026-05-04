@@ -3,6 +3,7 @@ use crate::errors::{FileSentinelError, Result};
 use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::io::{BufReader, Read};
 use md5::{Md5, Digest};
 use walkdir::WalkDir;
 use log::{debug, info, warn};
@@ -22,7 +23,7 @@ impl PollingWatcher {
 
     /// Calcule le hash MD5 d'un fichier
     fn compute_md5(&self, path: &Path) -> Result<[u8; 16]> {
-        let content = fs::read(path).map_err(|e| {
+        let file = fs::File::open(path).map_err(|e| {
             if e.kind() == std::io::ErrorKind::PermissionDenied {
                 FileSentinelError::PermissionDenied {
                     path: path.to_path_buf(),
@@ -32,8 +33,15 @@ impl PollingWatcher {
             }
         })?;
 
+        let mut reader = BufReader::new(file);
         let mut hasher = Md5::new();
-        hasher.update(&content);
+        let mut buffer = [0; 8192]; // Buffer de 8KB
+
+        while let Ok(count) = reader.read(&mut buffer) {
+            if count == 0 { break; }
+            hasher.update(&buffer[..count]);
+        }
+
         let result = hasher.finalize();
         let mut hash = [0u8; 16];
         hash.copy_from_slice(&result);
@@ -148,8 +156,8 @@ impl PollingWatcher {
 }
 
 impl Watcher for PollingWatcher {
-    fn watch<P: AsRef<Path>>(&mut self, path: P) -> Result<()> {
-        let path = path.as_ref().to_path_buf();
+    fn watch(&mut self, path: &Path) -> Result<()> {
+        let path = path.to_path_buf();
 
         if !path.exists() {
             return Err(FileSentinelError::NotFound(format!(
@@ -180,8 +188,8 @@ impl Watcher for PollingWatcher {
         Ok(())
     }
 
-    fn unwatch<P: AsRef<Path>>(&mut self, path: P) -> Result<()> {
-        let path = path.as_ref().to_path_buf();
+    fn unwatch(&mut self, path: &Path) -> Result<()> {
+        let path = path.to_path_buf();
         info!("Stopping watch: {}", path.display());
         self.watched_dirs.retain(|p| p != &path);
         Ok(())

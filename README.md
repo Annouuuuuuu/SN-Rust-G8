@@ -8,7 +8,7 @@
 
 **FileSentinel** est un outil de surveillance de fichiers qui détecte les changements (création, modification, suppression) et synchronise automatiquement vers un répertoire de destination. Inspiré par `rsync` et `inotifywait`, il offre des fonctionnalités avancées de versionnement, compression, et notifications desktop.
 
-## Contenu de l'info
+## Table de matière
 
 - [Fonctionnalités](#-fonctionnalités)
 - [Installation](#-installation)
@@ -18,7 +18,9 @@
 - [Workflows](#-workflows)
 - [Architecture](#-architecture)
 - [Développement](#-développement)
-- [FAQ](#-faq)
+- [Dépannage & FAQ](#-dépannage--faq)
+- [Cas d'utilisation](#-cas-dutilisation)
+- [Roadmap](#-roadmap)
 - [Licence](#-licence)
 
 ## ✨ Fonctionnalités
@@ -78,16 +80,12 @@
 git clone https://github.com/votre-username/filesentinel.git
 cd filesentinel
 
-# Compiler en mode release
+# Installation avec installation globale (recommandé)
+cargo install --path .
+
+# Ou compiler en mode release sans installer globalement
 cargo build --release
-
 # L'exécutable se trouve dans target/release/filesentinel
-```
-
-### Installation avec Cargo
-
-```bash
-cargo install filesentinel
 ```
 
 ### Vérification de l'installation
@@ -99,30 +97,25 @@ filesentinel --help
 
 ## 🚀 Démarrage rapide
 
-### 1. Initialisation
+Après l'installation, voici les étapes pour démarrer :
 
 ```bash
-# Générer la configuration par défaut
+# 1. Générer la configuration par défaut
 filesentinel init
-```
 
-### 2. Première synchronisation
+# 2. Éditer la configuration (optionnel)
+# Voir la section Configuration pour les détails
 
-```bash
-# Créer un dossier de test
+# 3. Première synchronisation
 mkdir mon_projet
 echo "Hello FileSentinel" > mon_projet/test.txt
-
-# Synchroniser
 filesentinel sync --source ./mon_projet --dest ./backup
-```
 
-### 3. Démarrer la surveillance
-
-```bash
-# Lancer la surveillance en temps réel
+# 4. Démarrer la surveillance en temps réel
 filesentinel watch --directories ./mon_projet
 ```
+
+Pour plus de détails sur chaque commande, voir la section [Commandes](#-commandes) ci-dessous.
 
 ## 📋 Commandes
 
@@ -517,9 +510,7 @@ RUST_LOG=info filesentinel watch 2> filesentinel.log
 RUST_LOG=trace filesentinel -v watch
 ```
 
-
-
-### Dépannage
+## 🆘 Dépannage & FAQ
 
 **Q : Les notifications ne fonctionnent pas sur Linux**
 ```bash
@@ -616,13 +607,42 @@ MIT License - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ## Remerciements
 
+Merci aux créateurs de ces excellentes crates Rust :
+
 - [notify](https://github.com/notify-rs/notify) - Surveillance de fichiers cross-platform
-- [clap](https://github.com/clap-rs/clap) - Interface en ligne de commande
-- [serde](https://github.com/serde-rs/serde) - Sérialisation
-- [chrono](https://github.com/chronotope/chrono) - Gestion du temps
-- [flate2](https://github.com/rust-lang/flate2-rs) - Compression
+- [clap](https://github.com/clap-rs/clap) - Interface en ligne de commande robuste
+- [serde](https://github.com/serde-rs/serde) - Sérialisation/désérialisation
+- [chrono](https://github.com/chronotope/chrono) - Gestion du temps et dates
+- [flate2](https://github.com/rust-lang/flate2-rs) - Compression GZIP
+- [toml](https://github.com/toml-rs/toml) - Parsing TOML
+- [anyhow](https://github.com/dtolnay/anyhow) - Gestion d'erreurs ergonomique
 
-## Support
+## Contribution
 
-- **Email** : votre-email@example.com
+Les contributions sont les bienvenues ! Merci de :
+
+1. Fork le projet
+2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/AmazingFeature`)
+3. Commiter vos changements (`git commit -m 'Add AmazingFeature'`)
+4. Pusher la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
+
+### Guidelines de contribution
+
+- Respecter le style de code existant
+- Ajouter des tests pour les nouvelles fonctionnalités
+- Mettre à jour la documentation
+- Utiliser `cargo fmt` et `cargo clippy` avant de soumettre
+
+## Support et contact
+
+- **Issues GitHub** : Signaler des bugs ou demander des fonctionnalités
+- **Discussions** : Poser des questions sur l'utilisation
+- **GitHub Wiki** : Consulter la documentation étendue
+
+## Version actuelle
+
+**FileSentinel v0.2.0** - Février 2026
+
+Voir [CHANGELOG](CHANGELOG.md) pour l'historique des versions.
 

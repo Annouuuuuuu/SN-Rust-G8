@@ -38,18 +38,18 @@ fn main() {
     // Charger la configuration
     let config = match Config::from_file(&cli.config) {
         Ok(c) => {
-            info!("Configuration chargée depuis {}", cli.config);
+            info!("Configuration loaded from {}", cli.config);
             c
         }
         Err(e) => {
-            warn!("Impossible de charger la config ({}), utilisation des valeurs par défaut", e);
+            warn!("Could not load config ({}), using defaults", e);
             Config::default()
         }
     };
 
     // Exécuter la commande
     if let Err(e) = run_command(cli, config) {
-        error!("Erreur fatale : {}", e);
+        error!("Fatal error: {}", e);
         // Envoyer une notification d'erreur
         let manager = NotificationManager::new(NotificationConfig::default());
         manager.send_error_notification(&e);
@@ -146,7 +146,7 @@ fn create_filter_chain(config: &Config) -> Result<FilterChain> {
             true,
         ) {
             Ok(rule) => chain.add_rule(rule),
-            Err(e) => warn!("Pattern de filtre invalide '{}' : {}", pattern, e),
+            Err(e) => warn!("Invalid filter pattern '{}': {}", pattern, e),
         }
     }
 
@@ -181,16 +181,16 @@ fn run_watch_command(
 
     if dirs_to_watch.is_empty() {
         return Err(FileSentinelError::Config(
-            "Aucun répertoire spécifié pour la surveillance".to_string(),
+            "No directories specified to watch".to_string(),
         ));
     }
 
-    println!("FileSentinel - Début de la surveillance...");
-    println!("Répertoires surveillés : {:?}", dirs_to_watch);
-    println!("Destination de synchronisation : {}", config.sync.destination);
+    println!("🔍 FileSentinel - Starting surveillance...");
+    println!("Watching directories: {:?}", dirs_to_watch);
+    println!("Sync destination: {}", config.sync.destination);
 
     if daemon {
-        println!("Fonctionnement en mode démon (Ctrl+C pour arrêter)");
+        println!("Running in daemon mode (Ctrl+C to stop)");
     }
 
     let mut sync_engine = SyncEngine::new(&dirs_to_watch[0], &config.sync.destination);
@@ -198,22 +198,22 @@ fn run_watch_command(
     // Choisir le watcher selon la plateforme
     #[cfg(target_os = "linux")]
     let mut watcher: Box<dyn Watcher> = {
-        println!(" Utilisation du watcher inotify (Linux)");
+        println!("  🐧 Using inotify watcher (Linux)");
         Box::new(InotifyWatcher::new()?)
     };
     
     #[cfg(not(target_os = "linux"))]
     let mut watcher: Box<dyn Watcher> = {
-        println!("  📊 Utilisation du watcher par scrutation");
+        println!("  📊 Using polling watcher");
         Box::new(PollingWatcher::new())
     };
 
     for dir in &dirs_to_watch {
         watcher.watch(std::path::Path::new(dir))?;
-        println!("  📁 Surveillance : {}", dir);
+        println!("  📁 Watching: {}", dir);
     }
 
-    println!("\nAppuyez sur Ctrl+C pour arrêter...\n");
+    println!("\nPress Ctrl+C to stop...\n");
 
     loop {
         match watcher.events() {
@@ -234,7 +234,7 @@ fn run_watch_command(
                             if let Some(ref mut version_mgr) = *vm {
                                 if let Some(hash) = event.file_hash() {
                                     if let Err(e) = version_mgr.save_version(&event.file_path, hash) {
-                                        warn!("Impossible de sauvegarder la version : {}", e);
+                                        warn!("Failed to save version: {}", e);
                                     }
                                 }
                             }
@@ -246,7 +246,7 @@ fn run_watch_command(
                         Ok(stats) => {
                             if config.reporting.show_progress && stats.files_copied > 0 {
                                 println!(
-                                    "    ✅ Synchronisé : {} fichiers, {} octets en {}ms",
+                                    "    ✅ Synced: {} files, {} bytes in {}ms",
                                     stats.files_copied,
                                     stats.total_bytes_transferred,
                                     stats.duration_ms
@@ -260,7 +260,7 @@ fn run_watch_command(
                             }
                         }
                         Err(e) => {
-                            error!("Erreur de synchronisation : {}", e);
+                            error!("Sync error: {}", e);
                             notification_manager.send_error_notification(&e);
                         }
                     }
@@ -270,7 +270,7 @@ fn run_watch_command(
                 }
             }
             Err(e) => {
-                error!("Erreur de surveillance : {}", e);
+                error!("Watch error: {}", e);
                 notification_manager.send_error_notification(&e);
                 std::thread::sleep(Duration::from_secs(1));
             }
@@ -289,15 +289,15 @@ fn run_sync_command(
     let source = source.unwrap_or(&config.watch.directories[0]);
     let dest = dest.unwrap_or(&config.sync.destination);
 
-    println!("🔄 Lancement de la synchronisation complète...");
-    println!("Source : {}", source);
-    println!("Destination : {}", dest);
+    println!("🔄 Starting full sync...");
+    println!("Source: {}", source);
+    println!("Destination: {}", dest);
 
     let mut engine = SyncEngine::new(source, dest);
 
     match engine.full_sync() {
         Ok(stats) => {
-            println!("\n✅ Synchronisation terminée avec succès !");
+            println!("\n✅ Sync completed successfully!");
             println!("{}", stats);
             notification_manager.send_sync_complete_notification(&stats);
         }
@@ -320,9 +320,9 @@ fn show_version_history(
             let versions = vm.get_versions(path);
 
             if versions.is_empty() {
-                println!("Aucune version trouvée pour : {}", path.display());
+                println!("No versions found for: {}", path.display());
             } else {
-                println!("Historique des versions pour : {}", path.display());
+                println!("Version history for: {}", path.display());
                 println!("{:-<60}", "");
 
                 for version in versions.iter().rev() {
@@ -352,14 +352,14 @@ fn restore_file_version(
     match version_manager {
         Some(vm) => {
             println!(
-                "Restauration de la version {} de {}...",
+                "Restoring version {} of {}...",
                 version,
                 path.display()
             );
 
             vm.restore_version(path, version)?;
 
-            println!(" Version restaurée avec succès !");
+            println!("✅ Version restored successfully!");
 
             // Créer un événement pour notification
             use watcher::types::{DiffEvent, ChangeType};
@@ -398,15 +398,15 @@ fn run_network_sync(
 
             let sync = network::NetworkSync::new(ssh_config);
 
-            println!("Test de la connexion SSH...");
+            println!("Testing SSH connection...");
             match sync.test_connection() {
-                Ok(true) => println!(" Connexion SSH réussie\n"),
+                Ok(true) => println!("✅ SSH connection successful\n"),
                 Ok(false) => {
-                    println!("Échec de la connexion SSH");
+                    println!("❌ SSH connection failed");
                     return Ok(());
                 }
                 Err(e) => {
-                    println!(" Erreur de connexion SSH : {}", e);
+                    println!("❌ SSH connection error: {}", e);
                     return Ok(());
                 }
             }
@@ -415,11 +415,11 @@ fn run_network_sync(
 
             let result = match direction {
                 SyncDirection::ToRemote => {
-                    println!("Synchronisation vers le serveur distant...");
+                    println!("Syncing to remote server...");
                     sync.sync_to_remote(local_path)?
                 }
                 SyncDirection::FromRemote => {
-                    println!("Synchronisation depuis le serveur distant...");
+                    println!("Syncing from remote server...");
                     sync.sync_from_remote(local_path)?
                 }
             };
@@ -432,7 +432,7 @@ fn run_network_sync(
             }
         }
         None => {
-            println!("La configuration réseau n'est pas définie. Ajoutez une section [network] à config.toml");
+            println!("Network configuration not set. Add [network] section to config.toml");
         }
     }
 
@@ -440,43 +440,43 @@ fn run_network_sync(
 }
 
 fn show_config(config: &Config) {
-    println!("\n📋 Configuration actuelle :");
+    println!("\n📋 Current Configuration:");
     println!("{:#?}", config);
 }
 
 fn show_stats(_config: &Config, version_manager: Option<&VersionManager>, period: &str) {
-    println!("\n📊 Statistiques pour la période : {}", period);
+    println!("\n📊 Statistics for period: {}", period);
     println!("{:=<50}", "");
 
     if let Some(vm) = version_manager {
         let stats = vm.get_stats();
         println!("{}", stats);
     } else {
-        println!("Le versionnage n'est pas activé");
+        println!("Versioning is not enabled");
     }
 }
 
 fn show_rules(config: &Config, _filter_chain: &FilterChain) {
-    println!("\n🔧 Règles de filtrage actives :");
+    println!("\n🔧 Active Filter Rules:");
     println!("{:=<50}", "");
 
-    println!("Modèles d'exclusion :");
+    println!("Exclusion patterns:");
     for pattern in &config.filters.exclude_patterns {
         println!("  - {}", pattern);
     }
 
     if let Some(max_size) = config.filters.max_file_size_mb {
-        println!("\nTaille maximale de fichier : {} Mo", max_size);
+        println!("\nMax file size: {} MB", max_size);
     }
 
     if !config.filters.include_extensions.is_empty() {
-        println!("\nExténsions incluses : {:?}", config.filters.include_extensions);
+        println!("\nIncluded extensions: {:?}", config.filters.include_extensions);
     }
 }
 
 fn generate_default_config() -> Result<()> {
     let config = Config::default();
     config.save_to_file("config.toml")?;
-    println!(" Configuration par défaut générée : config.toml");
+    println!("✅ Default configuration generated: config.toml");
     Ok(())
 }

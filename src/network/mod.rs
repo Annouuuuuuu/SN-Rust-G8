@@ -27,8 +27,8 @@ impl std::fmt::Display for NetworkSyncResult {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "Network sync: {} in {}ms - {} files, {} MB",
-            if self.success { "SUCCESS" } else { "FAILED" },
+            "Synchro réseau : {} en {}ms - {} fichiers, {} Mo",
+            if self.success { "RÉUSSI" } else { "ÉCHEC" },
             self.duration_ms,
             self.files_synced,
             self.bytes_transferred as f64 / 1_000_000.0
@@ -48,7 +48,7 @@ impl NetworkSync {
     /// Vérifie la connexion SSH
     pub fn test_connection(&self) -> Result<bool> {
         info!(
-            "Testing SSH connection to {}@{}:{}",
+            "Test de la connexion SSH vers {}@{}:{}",
             self.config.username, self.config.host, self.config.port
         );
 
@@ -68,7 +68,7 @@ impl NetworkSync {
         cmd.arg("echo connected");
 
         let output = cmd.output().map_err(|e| {
-            FileSentinelError::Network(format!("Cannot execute SSH: {}", e))
+            FileSentinelError::Network(format!("Impossible d'exécuter SSH : {}", e))
         })?;
 
         Ok(output.status.success())
@@ -87,7 +87,7 @@ impl NetworkSync {
         };
 
         info!(
-            "Syncing to remote: {} -> {}@{}:{}",
+            "Synchronisation vers le serveur distant : {} -> {}@{}:{}",
             local_path.display(),
             self.config.username,
             self.config.host,
