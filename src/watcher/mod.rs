@@ -11,6 +11,7 @@ pub trait Watcher {
     fn watch(&mut self, path: &Path) -> Result<()>;
     
     /// Arrête de surveiller un répertoire
+    #[allow(dead_code)]
     fn unwatch(&mut self, path: &Path) -> Result<()>;
     
     /// Récupère les événements détectés

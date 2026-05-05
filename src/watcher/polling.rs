@@ -101,7 +101,7 @@ impl PollingWatcher {
         new_state: Vec<FileState>,
     ) -> Vec<DiffEvent> {
         let mut events = Vec::new();
-        let now = chrono::Utc::now();
+        let _now = chrono::Utc::now();
 
         // Convertir en HashMap pour une recherche rapide
         let new_state_map: HashMap<&PathBuf, &FileState> = new_state

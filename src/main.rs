@@ -477,6 +477,6 @@ fn show_rules(config: &Config, _filter_chain: &FilterChain) {
 fn generate_default_config() -> Result<()> {
     let config = Config::default();
     config.save_to_file("config.toml")?;
-    println!(" Configuration par défaut générée : config.toml");
+    println!(" ✅ Configuration par défaut générée : config.toml");
     Ok(())
 }

@@ -23,70 +23,106 @@
 - [Roadmap](#-roadmap)
 - [Licence](#-licence)
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
-### 🔍 Surveillance
+### Surveillance
 - **Polling** : Analyse récursive des répertoires avec comparaison d'état (hash MD5)
 - **Inotify** (Linux) : Détection native et instantanée des changements
 - **Cross-platform** : Fonctionne sur Windows, Linux et macOS via `notify`
 
-### 🔄 Synchronisation
+### Synchronisation
 - Synchronisation incrémentielle (différentielle)
 - Gestion des créations, modifications et suppressions
 - Détection des conflits
 - Support de compression pour les transferts
 
-### 📦 Versionnement
+### Versionnement
 - Sauvegarde automatique des versions de fichiers
 - Nombre de versions configurable
 - Restauration à une version spécifique
 - Nettoyage automatique des anciennes versions
 
-### 🎯 Filtrage
+### Filtrage
 - Patterns glob d'exclusion/inclusion
 - Filtrage par taille de fichier
 - Filtrage par extension
 - Règles configurables
 
-### 🔔 Notifications
+### Notifications
 - Notifications desktop natives
 - Regroupement par lots
 - Filtrage des fichiers critiques
 - Intervalle de notification configurable
 
-### 🌐 Réseau
+### Réseau
 - Synchronisation via SSH/rsync
 - Support des clés SSH
 - Options rsync personnalisables
 - Synchronisation bidirectionnelle
 
-### 🗜️ Compression
+### Compression
 - Compression GZIP à la volée
 - Niveau de compression configurable
 - Seuil de taille minimum
 
-## 📥 Installation
+## Installation
 
-### Prérequis
+### Option 1 — Binaire précompilé (recommandé, aucun prérequis)
 
-- **Rust** 1.70 ou supérieur
-- **rsync** (optionnel, pour la synchronisation réseau)
-- **SSH** (optionnel, pour la synchronisation réseau)
+Téléchargez la dernière version depuis la [page Releases](https://github.com/Annouuuuuuu/SN-Rust-G8/releases), extrayez l'archive et lancez le script d'installation correspondant à votre système.
 
-### Installation depuis les sources
+**Windows**
+
+```
+filesentinel-windows.zip
+├── filesentinel.exe
+├── install.ps1
+└── uninstall.ps1
+```
+
+Clic droit sur `install.ps1` → **Exécuter avec PowerShell** (en tant qu'administrateur).
+
+> Si Windows bloque le script, ouvrez PowerShell en administrateur et exécutez d'abord :
+> ```powershell
+> Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+> ```
+
+**Linux**
+
+```
+filesentinel-linux.tar.gz
+├── filesentinel
+├── install.sh
+└── uninstall.sh
+```
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+---
+
+### Option 2 — Depuis les sources (nécessite Rust 1.70+)
 
 ```bash
 # Cloner le dépôt
-git clone https://github.com/votre-username/filesentinel.git
-cd filesentinel
+git clone https://github.com/Annouuuuuuu/SN-Rust-G8
+cd SN-Rust-G8
 
-# Installation avec installation globale (recommandé)
+# Compiler et installer globalement
 cargo install --path .
-
-# Ou compiler en mode release sans installer globalement
-cargo build --release
-# L'exécutable se trouve dans target/release/filesentinel
 ```
+
+> **Note Linux :** avant de compiler, activez le watcher natif inotify en décommentant les fonctions Linux dans `src/config/settings.rs` et en commentant les fonctions Windows correspondantes (instructions détaillées dans le fichier).
+
+---
+
+### Dépendances optionnelles
+
+- **rsync** et **SSH** : uniquement nécessaires pour la synchronisation réseau distante
+
+---
 
 ### Vérification de l'installation
 
@@ -95,7 +131,7 @@ filesentinel --version
 filesentinel --help
 ```
 
-## 🚀 Démarrage rapide
+## Démarrage rapide
 
 Après l'installation, voici les étapes pour démarrer :
 
@@ -117,7 +153,7 @@ filesentinel watch --directories ./mon_projet
 
 Pour plus de détails sur chaque commande, voir la section [Commandes](#-commandes) ci-dessous.
 
-## 📋 Commandes
+## Commandes
 
 ### `init` - Initialisation
 
@@ -133,7 +169,7 @@ filesentinel --config production.toml init
 
 ### `watch` - Surveillance
 
-Démarre la surveillance des répertoires en temps réel.
+Démarre la surveillance des répertoires en temps réel. (Synchronisation automatique)
 
 ```bash
 # Utiliser les répertoires de la configuration
@@ -249,9 +285,10 @@ filesentinel network-sync from-remote
 | `--help` | `-h` | Affiche l'aide | - |
 | `--version` | `-V` | Affiche la version | - |
 
-## ⚙️ Configuration
+## Configuration
 
 ### Fichier `config.toml`
+Il s'agit ici d'un fichier de configuration test. Pour l'utiliser, vous devez avor préalablement créer un dossier("./test_source/test.txt") dans le répertoire de filesentiel.
 
 ```toml
 [watch]
@@ -332,7 +369,9 @@ critical_patterns = [
 # auto_sync_interval_minutes = 30
 ```
 
-## 💡 Workflows
+> **Note Linux :** si vous compilez depuis les sources, pensez à activer les fonctions Linux dans `src/config/settings.rs` avant de compiler (voir section [Installation](#-installation)).
+
+## Workflows
 
 ### Workflow 1 : Premier démarrage
 
@@ -403,7 +442,7 @@ filesentinel network-sync to-remote
 filesentinel network-sync to-remote
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 filesentinel/
@@ -453,7 +492,7 @@ filesentinel/
 | `config` | Configuration | TOML, sérialisation, valeurs par défaut |
 | `cli` | Interface en ligne de commande | Sous-commandes, arguments, aide |
 
-## 🛠️ Développement
+## Développement
 
 ### Compilation
 
@@ -510,7 +549,7 @@ RUST_LOG=info filesentinel watch 2> filesentinel.log
 RUST_LOG=trace filesentinel -v watch
 ```
 
-## 🆘 Dépannage & FAQ
+## Dépannage & FAQ
 
 **Q : Les notifications ne fonctionnent pas sur Linux**
 ```bash
@@ -533,7 +572,7 @@ sudo filesentinel watch -d /var/log
 # Vérifier rsync
 rsync --version
 
-# Vérifier SSH
+# Vérifier SSH (remplacer user@host par votre vrai host)
 ssh user@host "echo test"
 
 # Tester avec filesentinel
@@ -560,7 +599,7 @@ include_extensions = ["rs", "toml", "lock"]
 max_versions = 20
 ```
 
-## 🎯 Cas d'utilisation
+## Cas d'utilisation
 
 ### Développeurs
 - Sauvegarde automatique du code source
@@ -577,14 +616,14 @@ max_versions = 20
 - Backup de configuration serveur
 - Réplication de données
 
-### Étudiants
+### Étudiants & Enseignants
 - Sauvegarde de travaux académiques
 - Synchronisation avec le cloud
 - Protection contre la perte de données
 
 
 
-## 📝 Roadmap
+## Roadmap
 
 ### Version 0.3.0
 - [ ] Interface TUI avec ratatui
@@ -642,7 +681,4 @@ Les contributions sont les bienvenues ! Merci de :
 
 ## Version actuelle
 
-**FileSentinel v0.2.0** - Février 2026
-
-Voir [CHANGELOG](CHANGELOG.md) pour l'historique des versions.
-
+**FileSentinel v0.2.0** - Avril 2026
