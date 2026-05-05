@@ -2,6 +2,10 @@
 directories = [
     'C:\Users\User\Documents',
     'C:\Users\User\Desktop',
+    'C:\Users\User\Downloads',
+    'C:\Users\User\Pictures',
+    'C:\Users\User\Music',
+    'C:\Users\User\Videos',
 ]
 polling_interval_ms = 500
 
@@ -109,3 +113,16 @@ critical_patterns = [
     "*.7z",
     "*.rar",
 ]
+
+[network]
+host = "mon-serveur.example.com"
+port = 22
+username = "User"
+key_path = "~/.ssh/id_rsa"
+remote_path = "/home/user/sauvegarde"
+rsync_options = [
+    "-avz",
+    "--progress",
+    "--partial",
+]
+auto_sync_interval_minutes = 30

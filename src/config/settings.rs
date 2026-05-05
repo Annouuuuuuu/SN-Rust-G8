@@ -33,7 +33,7 @@ impl Default for Config {
             versioning: VersioningConfig::default(),
             compression: CompressionConfig::default(),
             notifications: NotificationsConfig::default(),
-            network: None,
+            network: Some(NetworkConfig::default()),
         }
     }
 }
@@ -59,7 +59,7 @@ impl Default for WatchConfig {
 pub struct SyncConfig {
     #[serde(default = "default_destination")]
     pub destination: String,
-    #[serde(default = "default_true")]
+    #[serde(default)]
     pub create_backups: bool,
     #[serde(default = "default_concurrent_ops")]
     pub max_concurrent_operations: usize,
@@ -178,15 +178,32 @@ impl Default for NotificationsConfig {
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct NetworkConfig {
+    #[serde(default = "default_host")]
     pub host: String,
     #[serde(default = "default_port")]
     pub port: u16,
+    #[serde(default = "default_username")]
     pub username: String,
     pub key_path: Option<PathBuf>,
+    #[serde(default = "default_remote_path")]
     pub remote_path: PathBuf,
     #[serde(default = "default_rsync_options")]
     pub rsync_options: Vec<String>,
     pub auto_sync_interval_minutes: Option<u64>,
+}
+
+impl Default for NetworkConfig {
+    fn default() -> Self {
+        Self {
+            host: default_host(),
+            port: default_port(),
+            username: default_username(),
+            key_path: Some(PathBuf::from("~/.ssh/id_rsa")),
+            remote_path: default_remote_path(),
+            rsync_options: default_rsync_options(),
+            auto_sync_interval_minutes: Some(30),
+        }
+    }
 }
 
 // ============================================
@@ -197,7 +214,11 @@ fn default_directories() -> Vec<String> {
     let username = whoami::username();
     vec![
         format!("C:\\Users\\{}\\Documents", username),
-        format!("C:\\Users\\{}\\Desktop", username)
+        format!("C:\\Users\\{}\\Desktop", username),
+        format!("C:\\Users\\{}\\Downloads", username),
+        format!("C:\\Users\\{}\\Pictures", username),
+        format!("C:\\Users\\{}\\Music", username),
+        format!("C:\\Users\\{}\\Videos", username),
     ]
 }
 
@@ -328,6 +349,18 @@ fn default_critical_patterns() -> Vec<String> {
 
 fn default_port() -> u16 {
     22
+}
+
+fn default_host() -> String {
+    "mon-serveur.example.com".to_string()
+}
+
+fn default_username() -> String {
+    whoami::username()
+}
+
+fn default_remote_path() -> PathBuf {
+    PathBuf::from("/home/user/sauvegarde")
 }
 
 fn default_rsync_options() -> Vec<String> {

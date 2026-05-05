@@ -288,7 +288,8 @@ filesentinel network-sync from-remote
 ## Configuration
 
 ### Fichier `config.toml`
-Il s'agit ici d'un fichier de configuration test. Pour l'utiliser, vous devez avor préalablement créer un dossier("./test_source/test.txt") dans le répertoire de filesentiel.
+
+Généré automatiquement par `filesentinel init` avec des valeurs par défaut prêtes à l'emploi. Modifiez les champs selon vos besoins — en particulier la section `[network]` si vous souhaitez utiliser la synchronisation distante.
 
 ```toml
 [watch]
@@ -358,15 +359,24 @@ critical_patterns = [
     "*.lock"
 ]
 
-# Configuration réseau (optionnelle)
-# [network]
-# host = "remote-server.com"
-# port = 22
-# username = "user"
-# key_path = "~/.ssh/id_rsa"
-# remote_path = "/remote/backup"
-# rsync_options = ["-avz", "--progress"]
-# auto_sync_interval_minutes = 30
+# Configuration réseau (décommentez et adaptez pour activer)
+# La section [network] est générée par défaut avec des valeurs placeholder.
+# Modifiez les champs ci-dessous avec vos informations de connexion.
+[network]
+# Adresse du serveur distant
+host = "mon-serveur.example.com"
+# Port SSH (22 par défaut)
+port = 22
+# Nom d'utilisateur SSH
+username = "votre_utilisateur"
+# Chemin vers votre clé SSH privée (optionnel, commentez si non utilisé)
+key_path = "~/.ssh/id_rsa"
+# Chemin de destination sur le serveur distant
+remote_path = "/home/user/sauvegarde"
+# Options rsync
+rsync_options = ["-avz", "--progress", "--partial"]
+# Synchronisation automatique toutes les X minutes (optionnel)
+auto_sync_interval_minutes = 30
 ```
 
 > **Note Linux :** si vous compilez depuis les sources, pensez à activer les fonctions Linux dans `src/config/settings.rs` avant de compiler (voir section [Installation](#-installation)).
@@ -566,6 +576,21 @@ ls -la
 # Lancer avec les droits appropriés
 sudo filesentinel watch -d /var/log
 ```
+
+**Q : Comment configurer la synchronisation réseau ?**
+
+Après `filesentinel init`, la section `[network]` est déjà présente dans `config.toml` avec des valeurs placeholder. Modifiez-les :
+```toml
+[network]
+host = "mon-serveur.com"      # Adresse de votre serveur
+port = 22                      # Port SSH
+username = "alice"             # Votre identifiant
+key_path = "~/.ssh/id_rsa"    # Votre clé privée SSH
+remote_path = "/home/alice/backup"
+rsync_options = ["-avz", "--progress", "--partial"]
+auto_sync_interval_minutes = 30
+```
+Puis testez avec `filesentinel network-sync to-remote`.
 
 **Q : La synchronisation réseau échoue**
 ```bash
