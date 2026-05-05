@@ -480,3 +480,4 @@ fn generate_default_config() -> Result<()> {
     println!(" ✅ Configuration par défaut générée : config.toml");
     Ok(())
 }
+
