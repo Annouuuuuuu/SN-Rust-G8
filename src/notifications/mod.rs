@@ -254,7 +254,8 @@ impl NotificationManager {
             warn!("Failed to send error notification: {}", e);
         }
     }
-
+      
+      
     fn is_critical(&self, path: &std::path::Path) -> bool {
         let filename = path
             .file_name()
