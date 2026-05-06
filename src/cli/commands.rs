@@ -48,7 +48,7 @@ pub enum Commands {
         path: PathBuf,
     },
 
-    /// Restaurer une version spécifique
+    /// Pour restaurer une version spécifique
     Restore {
         /// Chemin du fichier
         path: PathBuf,
