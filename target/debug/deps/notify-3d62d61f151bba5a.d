@@ -1,0 +1,11 @@
+C:\Users\ABEL\Desktop\SUPPORT DE COURS GLO4\Semestre 8\Programmation Système\Programmation_Rust\TP\SN-Rust-G8\target\debug\deps\notify-3d62d61f151bba5a.d: C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\lib.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\windows.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\event.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\null.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\poll.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\config.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\error.rs
+
+C:\Users\ABEL\Desktop\SUPPORT DE COURS GLO4\Semestre 8\Programmation Système\Programmation_Rust\TP\SN-Rust-G8\target\debug\deps\libnotify-3d62d61f151bba5a.rmeta: C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\lib.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\windows.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\event.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\null.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\poll.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\config.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\error.rs
+
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\lib.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\windows.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\event.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\null.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\poll.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\config.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\notify-6.1.1\src\error.rs:

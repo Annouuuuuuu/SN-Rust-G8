@@ -1,0 +1,12 @@
+C:\Users\ABEL\Desktop\SUPPORT DE COURS GLO4\Semestre 8\Programmation Système\Programmation_Rust\TP\SN-Rust-G8\target\debug\deps\tar-922be3e37aa2745e.d: C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\lib.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\archive.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\builder.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\entry.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\entry_type.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\error.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\header.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\pax.rs
+
+C:\Users\ABEL\Desktop\SUPPORT DE COURS GLO4\Semestre 8\Programmation Système\Programmation_Rust\TP\SN-Rust-G8\target\debug\deps\libtar-922be3e37aa2745e.rmeta: C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\lib.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\archive.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\builder.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\entry.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\entry_type.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\error.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\header.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\pax.rs
+
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\lib.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\archive.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\builder.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\entry.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\entry_type.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\error.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\header.rs:
+C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tar-0.4.45\src\pax.rs:
