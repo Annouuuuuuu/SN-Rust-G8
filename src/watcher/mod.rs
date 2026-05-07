@@ -16,4 +16,5 @@ pub trait Watcher {
     
     /// Récupère les événements détectés
     fn events(&mut self) -> Result<Vec<DiffEvent>>;
+
 }
