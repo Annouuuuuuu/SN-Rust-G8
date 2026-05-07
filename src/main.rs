@@ -6,6 +6,7 @@ mod filters;
 mod network;
 mod notifications;
 mod synchro;
+mod tui;
 mod versioning;
 mod watcher;
 
@@ -130,6 +131,10 @@ fn run_command(cli: Cli, config: Config) -> Result<()> {
 
         Commands::Init => {
             generate_default_config()?;
+        }
+
+        Commands::Dashboard => {
+            tui::run_dashboard(config)?;
         }
     }
 

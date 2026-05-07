@@ -46,6 +46,10 @@ env_logger = "0.10"
 # Pour la surveillance (multi-plateforme)
 notify = { version = "6.1", default-features = false, features = ["macos_kqueue"] }
 
+# TUI
+ratatui = "0.28"
+crossterm = "0.28"
+
 [target.'cfg(target_os = "linux")'.dependencies]
 inotify = "0.10"
 

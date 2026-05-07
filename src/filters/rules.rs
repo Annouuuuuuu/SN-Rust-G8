@@ -89,6 +89,7 @@ impl FilterRule {
     }
 }
 
+#[derive(Clone)]
 pub struct FilterChain {
     rules: Vec<FilterRule>,
 }

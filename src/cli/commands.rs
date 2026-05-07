@@ -80,6 +80,9 @@ pub enum Commands {
 
     /// Générer un fichier de configuration par défaut
     Init,
+
+    /// Ouvrir le tableau de bord interactif (TUI)
+    Dashboard,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, ValueEnum)]
