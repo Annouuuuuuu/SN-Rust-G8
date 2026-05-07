@@ -1,9 +1,0 @@
-C:\Users\ABEL\Desktop\SUPPORT DE COURS GLO4\Semestre 8\Programmation Système\Programmation_Rust\TP\SN-Rust-G8\target\debug\deps\futures_lite-db5a55f7978d81cf.d: C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\lib.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\future.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\prelude.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\stream.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\io.rs
-
-C:\Users\ABEL\Desktop\SUPPORT DE COURS GLO4\Semestre 8\Programmation Système\Programmation_Rust\TP\SN-Rust-G8\target\debug\deps\libfutures_lite-db5a55f7978d81cf.rmeta: C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\lib.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\future.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\prelude.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\stream.rs C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\io.rs
-
-C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\lib.rs:
-C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\future.rs:
-C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\prelude.rs:
-C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\stream.rs:
-C:\Users\ABEL\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-lite-2.6.1\src\io.rs:
