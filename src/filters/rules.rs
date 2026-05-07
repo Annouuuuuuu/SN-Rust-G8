@@ -50,9 +50,10 @@ impl FilterRule {
 
     /// Vérifie si la règle correspond au chemin/fichier donné
     pub fn matches(&self, path: &Path, file_size: Option<u64>) -> bool {
-        // Vérifier le pattern glob
+        // Vérifier le pattern glob (normaliser les séparateurs pour Windows)
         if let Some(pattern) = &self.pattern {
-            if pattern.matches_path(path) {
+            let path_str = path.to_str().unwrap_or("").replace('\\', "/");
+            if pattern.matches(&path_str) {
                 debug!("Correspondance de règle '{}' pour le chemin : {}", self.name, path.display());
                 return true;
             }

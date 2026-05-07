@@ -14,6 +14,7 @@
 - [Installation](#-installation)
 - [Démarrage rapide](#-démarrage-rapide)
 - [Commandes](#-commandes)
+- [Dashboard TUI](#-dashboard-tui)
 - [Configuration](#-configuration)
 - [Workflows](#-workflows)
 - [Architecture](#-architecture)
@@ -53,6 +54,16 @@
 - Regroupement par lots
 - Filtrage des fichiers critiques
 - Intervalle de notification configurable
+
+### Dashboard TUI interactif
+- Interface en terminal (TUI) ultra-lisible avec **ratatui**
+- **6 onglets** : Dashboard, Surveillance, Synchronisation, Versions, Configuration, Règles
+- Surveillance et synchronisation contrôlables depuis l'interface sans quitter le terminal
+- Gestion complète des versions : recherche, restauration, suppression, nettoyage
+- Flux d'événements en temps réel avec horodatage
+- Ajout/suppression de dossiers surveillés à chaud
+- Modification de la destination de sync sans redémarrage
+- Annulation de la synchronisation en cours
 
 ### Réseau
 - Synchronisation via SSH/rsync
@@ -139,8 +150,11 @@ Après l'installation, voici les étapes pour démarrer :
 # 1. Générer la configuration par défaut
 filesentinel init
 
-# 2. Éditer la configuration (optionnel)
-# Voir la section Configuration pour les détails
+# 2. Ouvrir le dashboard interactif (recommandé)
+filesentinel dashboard
+# → tout se gère depuis l'interface : surveillance, sync, versions…
+
+# ─── Ou en ligne de commande ──────────────────────────────────────
 
 # 3. Première synchronisation
 mkdir mon_projet
@@ -151,9 +165,22 @@ filesentinel sync --source ./mon_projet --dest ./backup
 filesentinel watch --directories ./mon_projet
 ```
 
-Pour plus de détails sur chaque commande, voir la section [Commandes](#-commandes) ci-dessous.
+Pour plus de détails sur chaque commande, voir la section [Commandes](#-commandes) ci-dessous.  
+Pour l'interface graphique en terminal, voir la section [Dashboard TUI](#-dashboard-tui).
 
 ## Commandes
+
+### `dashboard` - Interface TUI interactive
+
+Ouvre le tableau de bord interactif en terminal. **C'est le mode recommandé** : toutes les opérations sont accessibles depuis une seule interface sans avoir à taper de commandes.
+
+```bash
+filesentinel dashboard
+```
+
+> Toutes les autres commandes CLI restent disponibles et fonctionnent indépendamment du dashboard.
+
+---
 
 ### `init` - Initialisation
 
@@ -285,6 +312,88 @@ filesentinel network-sync from-remote
 | `--help` | `-h` | Affiche l'aide | - |
 | `--version` | `-V` | Affiche la version | - |
 
+## Dashboard TUI
+
+Lancé avec `filesentinel dashboard`, le dashboard offre une interface en terminal complète construite avec [ratatui](https://github.com/ratatui/ratatui).
+
+### Navigation entre onglets
+
+| Touche | Action |
+|--------|--------|
+| `Tab` / `Shift+Tab` | Onglet suivant / précédent |
+| `1` à `6` | Aller directement à un onglet |
+| `Q` ou `Ctrl+C` | Quitter |
+
+### Onglet 1 — Dashboard
+
+Vue d'ensemble de l'état du système : statut de la surveillance, dossiers configurés, statistiques de la dernière synchronisation et flux des derniers événements détectés.
+
+| Touche | Action |
+|--------|--------|
+| `W` | Démarrer / arrêter la surveillance |
+| `S` | Lancer une synchronisation |
+| `↑` / `↓` ou `k` / `j` | Naviguer dans la liste d'événements |
+
+### Onglet 2 — Surveillance
+
+Gestion des dossiers surveillés et flux d'événements en temps réel.
+
+| Touche | Action |
+|--------|--------|
+| `W` | Démarrer / arrêter la surveillance |
+| `A` | Ajouter un dossier à surveiller |
+| `D` ou `Suppr` | Retirer le dossier sélectionné |
+| `S` | Lancer une synchronisation |
+| `↑` / `↓` | Sélectionner un dossier dans la liste |
+
+> Le flux d'événements en bas de l'écran se met à jour en temps réel : chaque fichier créé (`+`), modifié (`~`) ou supprimé (`✗`) apparaît avec son horodatage.
+
+### Onglet 3 — Synchronisation
+
+Contrôle de la synchronisation et affichage des résultats.
+
+| Touche | Action |
+|--------|--------|
+| `S` | Lancer la synchronisation complète |
+| `X` | Annuler la synchronisation en cours |
+| `E` | Modifier la destination de synchronisation |
+
+> Le résultat de la dernière sync (fichiers copiés, créés, supprimés, durée, erreurs) s'affiche à droite.
+
+### Onglet 4 — Versions
+
+Gestion de l'historique des versions de fichiers.
+
+| Touche | Action |
+|--------|--------|
+| `E` ou `Entrée` | Chercher les versions d'un fichier (saisir le chemin) |
+| `↑` / `↓` | Sélectionner une version dans la liste |
+| `R` | Restaurer la version sélectionnée à son emplacement d'origine |
+| `F` | Restaurer la version dans un dossier au choix |
+| `D` ou `Suppr` | Supprimer la version sélectionnée |
+| `C` | Nettoyer : conserver seulement N versions (saisir N) |
+
+### Onglet 5 — Configuration
+
+Affichage en lecture seule de la configuration active (issue de `config.toml`). Les modifications de dossiers et de destination effectuées dans les autres onglets sont sauvegardées automatiquement dans `config.toml`.
+
+### Onglet 6 — Règles
+
+Affichage des patterns d'exclusion actifs, de la taille maximum de fichier, des extensions incluses et des patterns critiques pour les notifications.
+
+### Saisie de texte (overlay)
+
+Quand une action nécessite une saisie (ajouter un dossier, modifier la destination, chercher un fichier…), un panneau de saisie apparaît par-dessus l'interface :
+
+| Touche | Action |
+|--------|--------|
+| Caractères | Saisir le texte |
+| `⌫` Backspace | Effacer le dernier caractère |
+| `Entrée` | Confirmer |
+| `Échap` | Annuler |
+
+---
+
 ## Configuration
 
 ### Fichier `config.toml`
@@ -383,6 +492,24 @@ auto_sync_interval_minutes = 30
 
 ## Workflows
 
+### Workflow 0 : Démarrage avec le dashboard (recommandé)
+
+```bash
+# 1. Initialiser la configuration
+filesentinel init
+
+# 2. Ouvrir le dashboard
+filesentinel dashboard
+
+# Dans le dashboard :
+# → Appuyer sur [2] pour aller dans l'onglet Surveillance
+# → Appuyer sur [A] pour ajouter un dossier à surveiller
+# → Appuyer sur [W] pour démarrer la surveillance
+# → Appuyer sur [3] pour aller dans l'onglet Sync
+# → Appuyer sur [E] pour définir la destination
+# → Appuyer sur [S] pour lancer la première synchronisation
+```
+
 ### Workflow 1 : Premier démarrage
 
 ```bash
@@ -458,31 +585,36 @@ filesentinel network-sync to-remote
 filesentinel/
 ├── src/
 │   ├── main.rs              # Point d'entrée
-│   ├── errors.rs             # Gestion d'erreurs
+│   ├── errors.rs            # Gestion d'erreurs
 │   ├── watcher/
 │   │   ├── mod.rs           # Trait Watcher
 │   │   ├── types.rs         # Types communs
-│   │   └── polling.rs       # Watcher par polling
+│   │   └── polling.rs       # Watcher par polling (MD5)
 │   ├── synchro/
 │   │   ├── mod.rs
 │   │   └── engine.rs        # Moteur de synchronisation
 │   ├── filters/
 │   │   ├── mod.rs
-│   │   └── rules.rs         # Règles de filtrage
+│   │   └── rules.rs         # Règles de filtrage (glob, taille, ext)
 │   ├── versioning/
 │   │   └── mod.rs           # Gestion des versions
 │   ├── compression/
 │   │   └── mod.rs           # Compression de fichiers
 │   ├── network/
-│   │   └── mod.rs           # Synchronisation réseau
+│   │   └── mod.rs           # Synchronisation réseau SSH
 │   ├── notifications/
 │   │   └── mod.rs           # Notifications desktop
 │   ├── config/
 │   │   ├── mod.rs
-│   │   └── settings.rs      # Configuration
-│   └── cli/
-│       ├── mod.rs
-│       └── commands.rs      # Interface CLI
+│   │   └── settings.rs      # Configuration TOML
+│   ├── cli/
+│   │   ├── mod.rs
+│   │   └── commands.rs      # Interface CLI (clap)
+│   └── tui/
+│       ├── mod.rs           # Point d'entrée du dashboard (boucle principale)
+│       ├── app.rs           # État de l'application, threads background
+│       ├── events.rs        # Gestion des touches clavier
+│       └── ui.rs            # Rendu ratatui (6 onglets, overlay saisie)
 ├── Cargo.toml
 ├── config.toml
 └── README.md
@@ -501,6 +633,7 @@ filesentinel/
 | `notifications` | Notifications desktop | Lots, priorités, fichiers critiques |
 | `config` | Configuration | TOML, sérialisation, valeurs par défaut |
 | `cli` | Interface en ligne de commande | Sous-commandes, arguments, aide |
+| `tui` | Dashboard interactif | 6 onglets, threads background, overlay saisie |
 
 ## Développement
 
@@ -650,8 +783,14 @@ max_versions = 20
 
 ## Roadmap
 
+### Version 0.2.0 ✅ (actuelle)
+- [x] Dashboard TUI interactif avec ratatui (6 onglets)
+- [x] Gestion des versions depuis l'interface (restauration, suppression, nettoyage)
+- [x] Ajout/suppression de dossiers surveillés à chaud
+- [x] Annulation de synchronisation
+- [x] Flux d'événements en temps réel
+
 ### Version 0.3.0
-- [ ] Interface TUI avec ratatui
 - [ ] Support WebSocket pour interface web
 - [ ] Compression différentielle
 
@@ -675,6 +814,8 @@ Merci aux créateurs de ces excellentes crates Rust :
 
 - [notify](https://github.com/notify-rs/notify) - Surveillance de fichiers cross-platform
 - [clap](https://github.com/clap-rs/clap) - Interface en ligne de commande robuste
+- [ratatui](https://github.com/ratatui/ratatui) - Framework TUI pour le dashboard interactif
+- [crossterm](https://github.com/crossterm-rs/crossterm) - Backend terminal cross-platform
 - [serde](https://github.com/serde-rs/serde) - Sérialisation/désérialisation
 - [chrono](https://github.com/chronotope/chrono) - Gestion du temps et dates
 - [flate2](https://github.com/rust-lang/flate2-rs) - Compression GZIP
@@ -706,4 +847,4 @@ Les contributions sont les bienvenues ! Merci de :
 
 ## Version actuelle
 
-**FileSentinel v0.2.0** - Avril 2026
+**FileSentinel v0.2.0** - Mai 2026 — Dashboard TUI interactif

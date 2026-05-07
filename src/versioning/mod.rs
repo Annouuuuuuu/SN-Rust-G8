@@ -212,6 +212,94 @@ impl VersionManager {
         Ok(())
     }
 
+    /// Restaure une version dans un chemin de destination arbitraire
+    pub fn restore_to_path<P: AsRef<Path>>(
+        &self,
+        file_path: P,
+        version_number: u32,
+        target: P,
+    ) -> Result<()> {
+        let file_path = file_path.as_ref();
+        let target = target.as_ref();
+
+        let versions = self.versions_index.get(file_path).ok_or_else(|| {
+            FileSentinelError::VersionStorage(format!(
+                "Aucune version pour : {}",
+                file_path.display()
+            ))
+        })?;
+
+        let version = versions
+            .iter()
+            .find(|v| v.version_number == version_number)
+            .ok_or_else(|| {
+                FileSentinelError::VersionStorage(format!("Version {} introuvable", version_number))
+            })?;
+
+        if let Some(parent) = target.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        fs::copy(&version.storage_path, target)?;
+
+        info!(
+            "Restored version {} of {} to {}",
+            version_number,
+            file_path.display(),
+            target.display()
+        );
+        Ok(())
+    }
+
+    /// Supprime une version spécifique du disque et de l'index
+    pub fn delete_version(&mut self, file_path: &Path, version_number: u32) -> Result<()> {
+        let versions = self.versions_index.get_mut(file_path).ok_or_else(|| {
+            FileSentinelError::VersionStorage(format!(
+                "Aucune version pour : {}",
+                file_path.display()
+            ))
+        })?;
+
+        let pos = versions
+            .iter()
+            .position(|v| v.version_number == version_number)
+            .ok_or_else(|| {
+                FileSentinelError::VersionStorage(format!("Version {} introuvable", version_number))
+            })?;
+
+        let removed = versions.remove(pos);
+        if removed.storage_path.exists() {
+            fs::remove_file(&removed.storage_path)?;
+        }
+        self.save_index()?;
+        info!("Deleted version {} of {}", version_number, file_path.display());
+        Ok(())
+    }
+
+    /// Supprime les anciennes versions, conserve les `keep_last` plus récentes
+    pub fn clean_old_versions(&mut self, file_path: &Path, keep_last: u32) -> Result<usize> {
+        let versions = match self.versions_index.get_mut(file_path) {
+            Some(v) => v,
+            None => return Ok(0),
+        };
+
+        if versions.len() <= keep_last as usize {
+            return Ok(0);
+        }
+
+        versions.sort_by_key(|v| v.version_number);
+        let to_remove = versions.len() - keep_last as usize;
+        let old: Vec<_> = versions.drain(..to_remove).collect();
+
+        for v in &old {
+            if v.storage_path.exists() {
+                let _ = fs::remove_file(&v.storage_path);
+            }
+        }
+        self.save_index()?;
+        info!("Cleaned {} old version(s) for {}", old.len(), file_path.display());
+        Ok(old.len())
+    }
+
     /// Obtient des statistiques globales
     pub fn get_stats(&self) -> VersionStats {
         let mut total_versions = 0u64;

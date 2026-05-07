@@ -1,12 +1,9 @@
 [watch]
-directories = [
-    'C:\Users\DELL\Documents',
-    'C:\Users\DELL\Desktop',
-]
+directories = ['C:\Users\DELL\Desktop\RUST\SN-Rust-G8\mon_projet']
 polling_interval_ms = 500
 
 [sync]
-destination = 'C:\SAUVEGARDE'
+destination = 'C:\Users\DELL\Desktop\RUST\SN-Rust-G\backup'
 create_backups = true
 max_concurrent_operations = 4
 
